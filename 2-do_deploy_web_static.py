@@ -10,10 +10,25 @@ import datetime
 
 
 env.hosts = ['18.234.169.191', '54.157.177.231']
-env.user = 'ubuntu'
-env.key_filename = '/root/.ssh/private-key'
 
 
+@task
+def do_pack():
+    """
+    Create a .tgz archive from web_static folder.
+    """
+    try:
+        current_time = datetime.utcnow()
+        file_name = "web_static_{}.tgz".format(current_time.strftime(
+            "%Y%m%d%H%M%S"))
+        local("mkdir -p versions")
+        local("tar -czvf versions/{} web_static".format(file_name))
+        return "versions/{}".format(file_name)
+    except Exception:
+        return None
+
+
+@task
 def do_deploy(archive_path):
     """Distributes an archive to web servers"""
     if not exists(archive_path):
@@ -24,7 +39,7 @@ def do_deploy(archive_path):
         archive_no_ext = archive_filename.split('.')[0]
 
         # Upload the archive to /tmp/
-        put(archive_path, "/tmp/{}".format(archive_filename))
+        put(archive_path, "/tmp/")
 
         # Create the folder /data/web_static/releases/<archive_no_ext>/
         run("mkdir -p /data/web_static/releases/{}/".format(archive_no_ext))
@@ -37,21 +52,23 @@ def do_deploy(archive_path):
         run("rm /tmp/{}".format(archive_filename))
 
         # Move the uncompressed files to the final destination
-        # run("mv /data/web_static/releases/{}/web_static/*
-        # /data/web_static/releases/{}/".format(
-        # archive_no_ext, archive_no_ext))
+        run(
+                "mv /data/web_static/releases/{}/web_static/* /data/"
+                "web_static/releases/{}/".format(
+                    archive_no_ext, archive_no_ext))
 
-        # run("rm -rf /data/web_static/releases/{}/web_static".format(
-        # archive_no_ext))
+        run("rm -rf /data/web_static/releases/{}/web_static".format(
+            archive_no_ext))
+
         # Delete the symbolic link /data/web_static/current
         run("rm -rf /data/web_static/current")
 
         # Create a new symbolic link
         run(
-                "ln -s /data/web_static/releases/{}/ "
-                "/data/web_static/current".format(archive_no_ext))
+                "ln -s /data/web_static/releases/{}/ /data/web_static/"
+                "current".format(archive_no_ext))
 
         return True
 
-    except Exception as e:
+    except Exception:
         return False
