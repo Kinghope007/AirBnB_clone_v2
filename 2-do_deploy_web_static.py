@@ -5,8 +5,7 @@ your web servers, using the function do_deploy.
 """
 from fabric.api import *
 from os.path import exists
-from os import makedirs
-import datetime
+from datetime import datetime
 
 
 env.hosts = ['18.234.169.191', '54.157.177.231']
