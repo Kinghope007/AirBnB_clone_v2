@@ -36,9 +36,9 @@ def do_deploy(archive_path):
         run("rm /tmp/{}".format(archive_filename))
 
         # Move the uncompressed files to the final destination
-        run("mv /data/web_static/releases/{}/web_static/* /data/web_static/releases/{}/".format(archive_no_ext, archive_no_ext))
+        # run("mv /data/web_static/releases/{}/web_static/* /data/web_static/releases/{}/".format(archive_no_ext, archive_no_ext))
 
-        run("rm -rf /data/web_static/releases/{}/web_static".format(archive_no_ext))
+        # run("rm -rf /data/web_static/releases/{}/web_static".format(archive_no_ext))
         # Delete the symbolic link /data/web_static/current
         run("rm -rf /data/web_static/current")
 
