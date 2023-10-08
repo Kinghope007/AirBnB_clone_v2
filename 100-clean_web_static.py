@@ -85,9 +85,8 @@ def do_clean(number=0):
 
         # Clean local archives
         with lcd('versions'):
-            local("ls -t | tail -n +{} | xargs -I {{}} rm -f {{}}".format(
+            local("ls -dt ./versions/* | head -n -{} | xargs rm -fr".format(
                 number))
-
         # Clean remote archives
         with cd('/data/web_static/releases'):
             archives = run("ls -t").split()
