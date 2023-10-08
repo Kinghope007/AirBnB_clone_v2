@@ -42,7 +42,7 @@ def do_deploy(archive_path):
 
         # Create the folder /data/web_static/releases/<archive_no_ext>/
         run("mkdir -p /data/web_static/releases/{}/".format(archive_no_ext))
-      
+
         dest_path = "/data/web_static/releases/{}/".format(archive_no_ext)
         # Uncompress the archive to /data/web_static/releases/<archive_no_ext>/
         run("tar -xzf /tmp/{} -C {}".format(archive_with_ext, dest_path))
