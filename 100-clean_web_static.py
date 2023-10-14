@@ -77,25 +77,10 @@ def deploy():
 
 @task
 def do_clean(number=0):
-    """Delete out-of-date archives"""
-    try:
-        if int(number) < 0:
-            return False
-        number = int(number) + 1  # Keep the most recent 'number' archives
-
-        # Clean local archives
-        with lcd('versions'):
-            local("ls -dt ./versions/* | head -n -{} | xargs rm -fr".format(
-                number))
-        # Clean remote archives
-        with cd('/data/web_static/releases'):
-            archives = run("ls -t").split()
-            if len(archives) >= number:
-                archives_to_delete = archives[number:]
-                for archive in archives_to_delete:
-                    if archive != 'web_static':
-                        run("rm -rf {}".format(archive))
-        return True
-
-    except Exception:
-        return False
+    """formats input and cleans remote"""
+    if int(number) == 0:
+        number = 1
+    number = int(number) + 1
+    pth = "/data/web_static/releases/*"
+    local("ls -dt ./versions/* | tail -n +{} | xargs rm -fr".format(n))
+    run("ls -dt {} | tail -n +{} | xargs rm -fr".format(pth, n))
