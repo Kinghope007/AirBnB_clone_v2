@@ -82,5 +82,5 @@ def do_clean(number=0):
         number = 1
     number = int(number) + 1
     pth = "/data/web_static/releases/*"
-    local("ls -dt ./versions/* | tail -n +{} | xargs rm -fr".format(n))
-    run("ls -dt {} | tail -n +{} | xargs rm -fr".format(pth, n))
+    local("ls -dt ./versions/* | tail -n +{} | xargs rm -fr".format(number))
+    run("ls -dt {} | tail -n +{} | xargs rm -fr".format(pth, number))
