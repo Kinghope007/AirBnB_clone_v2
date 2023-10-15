@@ -6,7 +6,7 @@ package { 'nginx':
 }
 
 # Create necessary directories
-file { ['/data/web_static/releases/test', '/data/web_static/shared']:
+file { ['/data/web_static/releases/test/', '/data/web_static/shared/']:
   ensure => 'directory',
   owner  => 'ubuntu',
   group  => 'ubuntu',
