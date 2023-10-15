@@ -1,16 +1,23 @@
 # web_static_setup.pp
 
 # Check if Nginx is installed and install it if not
-package { 'nginx':
-  ensure => 'installed',
+exec { 'update':
+  command => 'apt-get update',
+  provider => shell,
+}
+-> exec { 'install':
+  command => 'apt-get -y install nginx',
+  provider => shell,
 }
 
 # Create necessary directories
-file { ['/data/web_static/releases/test/', '/data/web_static/shared/']:
-  ensure => 'directory',
-  owner  => 'ubuntu',
-  group  => 'ubuntu',
-  mode   => '0755',
+-> exec { 'create_test_folder':
+  command => 'mkdir -p /data/web_static/releases/test/',
+  provider => shell,
+}
+-> exec { 'create_shared_folder':
+  command => 'mkdir -p /data/web_static/shared/',
+  provider => shell,
 }
 
 # Create a fake HTML file for testing
@@ -31,17 +38,17 @@ file { '/data/web_static/current':
 }
 
 # Update Nginx configuration
-file { '/etc/nginx/sites-enabled/default':
-  ensure  => 'file',
-  owner   => 'root',
-  group   => 'root',
-  mode    => '0644',
-  content => template('your_module/nginx_config.erb'),
-  require => Package['nginx'],
+-> exec { 'permission':
+  command => 'chown -R ubuntu:ubuntu /data/',
+  provider => shell,
+}
+-> exec { 'add_lines':
+  command => 'sudo sed -i "s|server_name _;|server_name _;\n\n\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}|" /etc/nginx/sites-enabled/default',
+  provider => shell,
 }
 
-service { 'nginx':
-  ensure     => 'running',
-  enable     => true,
-  subscribe  => File['/etc/nginx/sites-enabled/default'],
+# restart nginx
+-> exec { 'restart':
+  command => 'sudo service nginx restart',
+  provider => shell,
 }
