@@ -13,10 +13,10 @@ class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
     if storage_engine == "db":
-	name = Column(String(128), nullable=False)
+        name = Column(String(128), nullable=False)
         cities = relationship("City", backref="state", cascade="delete")
     else:
-	name = ""
+        name = ""
 
         @property
         def cities(self):
