@@ -12,16 +12,18 @@ storage_engine = getenv("HBNB_TYPE_STORAGE")
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
-    if storage_engine == "db":
-        name = Column(String(128), nullable=False)
-        cities = relationship("City", backref="state", cascade="delete")
-    else:
+    name = Column(String(128), nullable=False)
+    cities = relationship("City", backref="state", cascade="delete")
+    
+    if storage_engine != "db":
         name = ""
 
         @property
         def cities(self):
             """returns the list of City instances with
             state_id equals to the current State.id"""
+            from models import storage
+            from models.city import City
             matching_cities = []
             city_instances = storage.all().values()
             for city in city_instances:
