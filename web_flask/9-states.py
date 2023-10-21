@@ -20,8 +20,7 @@ def states_list():
     """Display a list of states and cities"""
     states = list(storage.all(State).values())
     states = sorted(states, key=lambda state: state.name)
-    return render_template('9-states.html', states=states)
-
+    return render_template('9-states.html', states=states, id=None)
 
 @app.route('/states/<id>', strict_slashes=False)
 def state_cities(id):
@@ -35,9 +34,9 @@ def state_cities(id):
 
     if state:
         cities = sorted(state.cities, key=lambda city: city.name)
-        return render_template('9-states.html', state=state, cities=cities)
+        return render_template('9-states.html', state=state, cities=cities, id=1)
     else:
-        return render_template('9-states.html', not_found=True)
+        return render_template('9-states.html', not_found=True, id=1)
 
 
 if __name__ == "__main__":
