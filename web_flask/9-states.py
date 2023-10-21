@@ -22,6 +22,7 @@ def states_list():
     states = sorted(states, key=lambda state: state.name)
     return render_template('9-states.html', states=states, id=None)
 
+
 @app.route('/states/<id>', strict_slashes=False)
 def state_cities(id):
     """Display cities of a specific state"""
@@ -34,7 +35,8 @@ def state_cities(id):
 
     if state:
         cities = sorted(state.cities, key=lambda city: city.name)
-        return render_template('9-states.html', state=state, cities=cities, id=1)
+        return render_template(
+                '9-states.html', state=state, cities=cities, id=1)
     else:
         return render_template('9-states.html', not_found=True, id=1)
 
