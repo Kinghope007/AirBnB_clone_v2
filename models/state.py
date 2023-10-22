@@ -25,7 +25,7 @@ class State(BaseModel, Base):
             from models import storage
             from models.city import City
             matching_cities = []
-            city_instances = storage.all().values()
+            city_instances = storage.all(City).values()
             for city in city_instances:
                 if city.state_id == self.id:
                     matching_cities.append(city)
