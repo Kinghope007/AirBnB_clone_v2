@@ -22,7 +22,10 @@ def hbnb_filters():
     cities = sorted(cities, key=lambda city: city.name)
     amenities = storage.all('Amenity').values()
     amenities = sorted(amenities, key=lambda amenity: amenity.name)
-    return render_template('10-hbnb_filters.html', states=states, cities=cities, amenities=amenities)
+    return render_template(
+            '10-hbnb_filters.html', states=states,
+            cities=cities, amenities=amenities
+            )
 
 
 if __name__ == '__main__':
