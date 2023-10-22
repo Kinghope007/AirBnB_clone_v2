@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """Importing modules require to start web flask app"""
 from flask import Flask, render_template
 from models import storage
